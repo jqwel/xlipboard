@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+option go_package = ".;service";
+
+service SyncService {
+  rpc Ping (PingRequest) returns (PingReply) {}
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc SayHowAreYou (HowAreYouRequest) returns (HowAreYouReply) {}
+  rpc ReadDir (ReadDirRequest) returns (ReadDirReply) {}
+  rpc Open (OpenRequest) returns (OpenReply) {}
+  rpc Release (ReleaseRequest) returns (ReleaseReply) {}
+  rpc ReadFileStream (ReadFileRequest) returns (stream ReadFileReply) {}
+  rpc ReadFile (ReadFileRequest) returns (ReadFileReply) {}
+//  rpc ReadFile (ReadFileRequest) returns (ReadFileReply) {}
+  rpc Stat (StatRequest) returns (StatReply) {}
+}
+message PingRequest {
+  string Msg = 1;
+}
+message PingReply {
+  string Msg = 1;
+}
+
+message HelloRequest {
+  int64 Timestamp = 1;
+  string RequestID = 2;
+}
+message HelloReply {
+  string Message = 1;
+  int64 Timestamp = 2;
+  bool Virtual = 3;
+}
+
+message HowAreYouRequest {
+  int64 Timestamp = 1;
+}
+message HowAreYouReply {
+  string Message = 1;
+  int64 Timestamp = 2;
+  string ContentType = 3;
+  string CopyStr = 4;
+  bytes CopyImageByte = 5;
+  repeated string CopyFilename = 6;
+}
+
+message ReadDirRequest{
+  string Path = 1;
+}
+message ReadDirReply{
+  string Message = 1;
+  message DirInfo {
+    string Name = 2;
+    bool IsDir = 3;
+    uint32 FileMode = 4;
+    int64 Size = 5;
+    int64 ModTime = 6;
+    int64 AccessTime = 7;
+    int64 StatusChangeTime = 8;
+    int64 BirthTime = 9;
+    uint32 Flags = 10;
+  }
+  repeated DirInfo DirInfoList = 2;
+}
+
+message OpenRequest{
+  string Path = 1;
+}
+message OpenReply{
+  string Message = 1;
+  uint64 Fh = 2;
+}
+message ReleaseRequest{
+  string Path = 1;
+  uint64 Fh = 2;
+}
+message ReleaseReply{
+  string Message = 1;
+}
+
+message ReadFileRequest{
+  string Path = 1;
+  int64 Offset = 2;
+  uint32 LenBuf = 3;
+  uint64 Fh = 4;
+  uint32 Mul = 5;
+}
+message ReadFileReply{
+  string Message = 1;
+  bytes Buf = 2;
+  int32 Read = 3;
+  bool EOF = 4;
+}
+
+message StatRequest{
+  string Path = 1;
+}
+message StatReply{
+  string Message = 1;
+  string Name = 2;
+  bool IsDir = 3;
+  uint32 FileMode = 4;
+  int64 Size = 5;
+  int64 ModTime = 6;
+  int64 AccessTime = 7;
+  int64 StatusChangeTime = 8;
+  int64 BirthTime = 9;
+  uint32 Flags = 10;
+}

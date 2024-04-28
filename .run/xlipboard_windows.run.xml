@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="xlipboard_windows" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="xlipboard" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="CGO_ENABLED" value="0" />
+    </envs>
+    <kind value="FILE" />
+    <package value="gh/xlipboard" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/src/cmd/main.go" />
+    <method v="2" />
+  </configuration>
+</component>

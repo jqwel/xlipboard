@@ -1,0 +1,18 @@
+[windows]winfsp
+https://github.com/winfsp/winfsp/releases/tag/v2.0
+https://pkg.go.dev/github.com/winfsp/cgofuse#section-readme
+
+#[Ubuntu]fuse
+sudo apt install libfuse-dev #( sudo aptitude install libfuse-dev)
+sudo apt install fuse3
+#[Ubuntu]clipboard
+sudo apt install xsel xclip
+#[Ubuntu]png
+sudo apt install libpng++-dev
+#[Ubuntu]gcc
+sudo apt install gcc libc6-dev
+#[Ubuntu]x11
+sudo apt install libx11-dev xorg-dev libxtst-dev
+
+[macos]fuse
+https://github.com/osxfuse/osxfuse/releases/tag/macfuse-4.6.1
