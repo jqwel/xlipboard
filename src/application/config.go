@@ -2,13 +2,19 @@ package application
 
 import (
 	"encoding/json"
+	"math/rand"
 	"os"
+	"time"
 
 	"github.com/jqwel/xlipboard/src/utils"
 )
 
 const ConfigFile = "Config.json"
 const LogFile = "log.txt"
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 type Config struct {
 	Port         string        `json:"Port"`
@@ -25,7 +31,7 @@ type SyncSetting struct {
 
 var DefaultConfig = Config{
 	Port:        "3216",
-	Authkey:     utils.RandStringBytes(64),
+	Authkey:     utils.RandStringBytes(rand.Intn(80-64+1) + 64),
 	Certificate: "",
 	PrivateKey:  "",
 	NtpAddress:  "ntp.aliyun.com",
