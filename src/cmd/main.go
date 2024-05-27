@@ -39,14 +39,14 @@ func init() {
 		log.SetLevel(logrus.DebugLevel)
 		log.SetFormatter(&logrus.TextFormatter{ForceColors: true})
 	} else {
-		//log.SetLevel(logrus.WarnLevel)
-		log.SetLevel(logrus.ErrorLevel)
-		logFilePath := filepath.ToSlash(filepath.Join(execPath, application.LogFile))
-		f, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND, 0644)
-		if err != nil {
-			log.WithError(err).Fatal("failed to open log file")
-		}
-		log.SetOutput(f)
+		log.SetLevel(logrus.FatalLevel)
+		//log.SetLevel(logrus.ErrorLevel)
+		//logFilePath := filepath.ToSlash(filepath.Join(execPath, application.LogFile))
+		//f, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND, 0644)
+		//if err != nil {
+		//	log.WithError(err).Fatal("failed to open log file")
+		//}
+		//log.SetOutput(f)
 	}
 }
 
@@ -60,7 +60,7 @@ func main() {
 	defer app.BeforeExit()
 	app.IsDebug = mode == "debug"
 
-	if err := utils.InitOffsetPeriodically(app.Config.NtpAddress, time.Hour); err != nil {
+	if err := utils.InitOffsetPeriodically(app.Config.NtpAddress, time.Minute*10); err != nil {
 		logger.Logger.Error(err)
 	}
 
