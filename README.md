@@ -17,7 +17,7 @@ xlipboard 是一款可以帮你在Windows、Ubuntu和macOS桌面系统之间同�
 
 ## 配置
 
-`xlipboard.exe` 将在运行路径下面创建两个文件： `Config.json` 和 `log.txt`
+`xlipboard.exe` 将在运行路径下面创建两个文件： `Config.json` ~~和 `log.txt`~~
 
 你可以通过修改 `Config.json` 来自定义配置
 
@@ -29,7 +29,7 @@ xlipboard 是一款可以帮你在Windows、Ubuntu和macOS桌面系统之间同�
 
 - `Authkey` # 认证密钥
   - type: `string`
-  - default: `随机生成64位`
+  - default: `随机生成不少于64位`
 
 - `NtpAddress` # 网络时间协议同步时间
   - type: `string`

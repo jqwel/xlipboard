@@ -25,6 +25,9 @@ func getContentTypeAndData() (contentType string, copyStr string, copyImageByte 
 	}
 	if contentType == utils.TypeText {
 		copyStr, err = utils.Xlipboard().Text()
+		if len(copyStr) > 1*1024*1024 {
+			copyStr = ""
+		}
 		if err != nil {
 			logger.Logger.WithError(err).Warn("failed to get clipboard")
 		}
