@@ -77,7 +77,7 @@ func GetConnQ(target string) func(route string, timeout time.Duration, input int
 
 func SayHelloQ(target string, currentChangeAt int64) (*service.HelloReply, error) {
 	call := GetConnQ(target)
-	reply, err := call(iconst.RoutePathSayHello, time.Second*1, &service.HelloRequest{
+	reply, err := call(iconst.RoutePathSayHello, time.Millisecond*300, &service.HelloRequest{
 		Timestamp: currentChangeAt,
 		RequestID: utils.RandStringBytes(32),
 	}, &service.HelloReply{})

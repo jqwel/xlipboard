@@ -113,7 +113,7 @@ func (d *Detector) StartFetch() {
 		if err := d.fetch(); err != nil {
 			logger.Logger.Errorln(err)
 		}
-		time.Sleep(time.Millisecond * 900)
+		time.Sleep(time.Millisecond * 300)
 	}
 }
 

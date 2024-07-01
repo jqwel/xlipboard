@@ -11,16 +11,6 @@ import (
 const MaxRetry = iconst.MaxLenChanConn * 10
 
 func SayHello(target string, currentChangeAt int64) (*service.HelloReply, error) {
-	for i := range 1 {
-		if g, err := SayHelloQ(target, currentChangeAt); err != nil {
-			logger.Logger.WithError(err).Error("SayHelloG Error")
-		} else {
-			if i > 0 {
-				logger.Logger.WithField("i", i).Info("SayHelloG Retry")
-			}
-			return g, err
-		}
-	}
 	return SayHelloQ(target, currentChangeAt)
 }
 
