@@ -17,19 +17,21 @@ func InitOffsetPeriodically(address string, interval time.Duration) error {
 		return err
 	}
 
-	// 启动后台 goroutine 定时更新偏移量
-	go func() {
-		ticker := time.NewTicker(interval)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-ticker.C:
-				if err := InitOffset(address); err != nil {
-					logger.Logger.Error(err)
+	if interval > 0 {
+		// 启动后台 goroutine 定时更新偏移量
+		go func() {
+			ticker := time.NewTicker(interval)
+			defer ticker.Stop()
+			for {
+				select {
+				case <-ticker.C:
+					if err := InitOffset(address); err != nil {
+						logger.Logger.Error(err)
+					}
 				}
 			}
-		}
-	}()
+		}()
+	}
 	return nil
 }
 

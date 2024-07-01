@@ -29,6 +29,7 @@ message HelloReply {
   string Message = 1;
   int64 Timestamp = 2;
   bool Virtual = 3;
+  int64 Now = 4;
 }
 
 message HowAreYouRequest {

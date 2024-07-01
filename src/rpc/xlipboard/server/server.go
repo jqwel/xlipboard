@@ -42,6 +42,7 @@ func (s *Server) SayHello(ctx context.Context, req *service.HelloRequest) (*serv
 		Message:   iconst.Success,
 		Timestamp: application.App.GetChangeAt(),
 		Virtual:   application.App.GetVirtual(),
+		Now:       utils.GetFixedNow().UnixMilli(),
 	}, nil
 }
 

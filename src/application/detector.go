@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -112,7 +113,7 @@ func (d *Detector) StartFetch() {
 		if err := d.fetch(); err != nil {
 			logger.Logger.Errorln(err)
 		}
-		time.Sleep(time.Millisecond * 800)
+		time.Sleep(time.Millisecond * 900)
 	}
 }
 
@@ -132,6 +133,7 @@ type HelloResult struct {
 	Target   string
 	ChangeAt int64
 	Virtual  bool
+	Now      int64
 }
 
 func (d *Detector) fetch() error {
@@ -165,7 +167,7 @@ func (d *Detector) fetch() error {
 				}
 				return
 			}
-			resultChan <- &HelloResult{Target: target, ChangeAt: shr.GetTimestamp(), Virtual: shr.GetVirtual()}
+			resultChan <- &HelloResult{Target: target, ChangeAt: shr.GetTimestamp(), Virtual: shr.GetVirtual(), Now: shr.GetNow()}
 		}(target, resultChan, &wg)
 	}
 
@@ -185,6 +187,9 @@ func (d *Detector) fetch() error {
 	}
 	if helloResult.Target == "" {
 		return nil
+	}
+	if math.Abs(float64(helloResult.Now-utils.GetFixedNow().UnixMilli())) > 2000 {
+		go utils.InitOffsetPeriodically(App.Config.NtpAddress, 0)
 	}
 
 	shrur, err := client.SayHowAreYou(helloResult.Target, helloResult.ChangeAt)
