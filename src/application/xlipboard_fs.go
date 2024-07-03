@@ -21,7 +21,7 @@ type XlipboardFs struct {
 	XlipboardCache
 }
 
-func (gfs *XlipboardFs) Open(path string, flags int) (int, uint64) {
+func (xfs *XlipboardFs) Open(path string, flags int) (int, uint64) {
 	if path == "/" {
 		return 0, 0
 	}
@@ -63,12 +63,12 @@ func (gfs *XlipboardFs) Open(path string, flags int) (int, uint64) {
 	if err != nil {
 		return -fuse.ENOENT, ^uint64(0)
 	}
-	gfs.InitCa(reply.GetFh())
+	xfs.InitCa(reply.GetFh())
 	return 0, reply.GetFh()
 }
 
-func (gfs *XlipboardFs) Release(path string, fh uint64) int {
-	gfs.ClearCa(fh)
+func (xfs *XlipboardFs) Release(path string, fh uint64) int {
+	xfs.ClearCa(fh)
 	if path == "/" {
 		return 0
 	}
@@ -113,7 +113,7 @@ func (gfs *XlipboardFs) Release(path string, fh uint64) int {
 	return 0
 }
 
-func (gfs *XlipboardFs) Getattr(path string, stat *fuse.Stat_t, fh uint64) int {
+func (xfs *XlipboardFs) Getattr(path string, stat *fuse.Stat_t, fh uint64) int {
 	if path == "/" {
 		stat.Mode = fuse.S_IFDIR | 0555
 		return 0
@@ -168,7 +168,7 @@ func (gfs *XlipboardFs) Getattr(path string, stat *fuse.Stat_t, fh uint64) int {
 	return 0
 }
 
-func (gfs *XlipboardFs) Read(path string, buff []byte, ofstFix int64, fh uint64) int {
+func (xfs *XlipboardFs) Read(path string, buff []byte, ofstFix int64, fh uint64) int {
 	ofst := ofstFix
 	if ofst < 0 {
 		ofst = -ofst
@@ -196,13 +196,13 @@ func (gfs *XlipboardFs) Read(path string, buff []byte, ofstFix int64, fh uint64)
 	if false {
 		var mul uint32 = 3
 		need := len(buff)
-		requested := gfs.CheckCaRequested(fh, ofstFix, len(buff), mul)
+		requested := xfs.CheckCaRequested(fh, ofstFix, len(buff), mul)
 
 		if !requested {
 			if mul > 1 && ofstFix >= 0 {
 				for i := range 2 {
 					go func(i int) {
-						_ = gfs.Read(path, make([]byte, len(buff)), -(ofst + int64(i+1)*int64(len(buff))*int64(mul)), fh)
+						_ = xfs.Read(path, make([]byte, len(buff)), -(ofst + int64(i+1)*int64(len(buff))*int64(mul)), fh)
 					}(i)
 				}
 			}
@@ -218,11 +218,11 @@ func (gfs *XlipboardFs) Read(path string, buff []byte, ofstFix int64, fh uint64)
 				copy(buff, reply.GetBuf()[:read])
 			}
 			if read > 0 {
-				gfs.ResultCaRequested(fh, ofst, len(buff), mul, reply.GetRead(), reply.GetBuf())
+				xfs.ResultCaRequested(fh, ofst, len(buff), mul, reply.GetRead(), reply.GetBuf())
 			}
 			return int(read)
 		} else {
-			fetch := gfs.ResultCaFetch(fh, ofstFix, len(buff), mul)
+			fetch := xfs.ResultCaFetch(fh, ofstFix, len(buff), mul)
 			if ofstFix >= 0 && fetch != nil {
 				copy(buff, fetch)
 			}
@@ -240,7 +240,7 @@ func (gfs *XlipboardFs) Read(path string, buff []byte, ofstFix int64, fh uint64)
 	return 0
 }
 
-func (gfs *XlipboardFs) Readdir(path string, fill func(name string, stat *fuse.Stat_t, ofst int64) bool, ofst int64, fh uint64) int {
+func (xfs *XlipboardFs) Readdir(path string, fill func(name string, stat *fuse.Stat_t, ofst int64) bool, ofst int64, fh uint64) int {
 	if ofst > 0 {
 		return 0
 	}
