@@ -4,10 +4,13 @@ import (
 	"os"
 )
 
-const REG_KEY = "Xlipboard"
+var REG_KEY = "Xlipboard"
 
 var REG_VALUE = os.Args[0]
 
+func SetRegKey(key string) {
+	REG_KEY = key
+}
 func QueryAutoRun() (bool, error) {
 	return queryAutoRun()
 }

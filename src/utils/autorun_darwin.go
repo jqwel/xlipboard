@@ -4,16 +4,20 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-const launchAgentPath = "Library/LaunchAgents/github.jqwel.xlipboard.plist"
+func getLaunchAgentPath() string {
+	return fmt.Sprintf("Library/LaunchAgents/github.jqwel.%s.plist", strings.ToLower(REG_KEY))
+}
 
-var launchAgentContent = fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8"?>
+func getLaunchAgentContent() string {
+	return fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>github.jqwel.xlipboard</string>
+	<string>github.jqwel.%s</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>%s</string>
@@ -22,10 +26,11 @@ var launchAgentContent = fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8"?>
 	<true/>
 </dict>
 </plist>
-`, REG_VALUE)
+`, strings.ToLower(REG_KEY), REG_VALUE)
+}
 
 func queryAutoRun() (bool, error) {
-	_, err := os.Stat(filepath.Join(os.Getenv("HOME"), launchAgentPath))
+	_, err := os.Stat(filepath.Join(os.Getenv("HOME"), getLaunchAgentPath()))
 	if err == nil {
 		return true, nil
 	} else if os.IsNotExist(err) {
@@ -35,11 +40,11 @@ func queryAutoRun() (bool, error) {
 }
 
 func enableAutoRun() error {
-	launchAgent := filepath.Join(os.Getenv("HOME"), launchAgentPath)
-	return os.WriteFile(launchAgent, []byte(launchAgentContent), 0644)
+	launchAgent := filepath.Join(os.Getenv("HOME"), getLaunchAgentPath())
+	return os.WriteFile(launchAgent, []byte(getLaunchAgentContent()), 0644)
 }
 
 func disableAutoRun() error {
-	launchAgent := filepath.Join(os.Getenv("HOME"), launchAgentPath)
+	launchAgent := filepath.Join(os.Getenv("HOME"), getLaunchAgentPath())
 	return os.Remove(launchAgent)
 }
