@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/jqwel/xlipboard/src/tags"
 	"image"
 	"image/png"
 	"io"
@@ -49,7 +50,7 @@ func (s *Server) SayHello(ctx context.Context, req *service.HelloRequest) (*serv
 func (s *Server) SayHowAreYou(ctx context.Context, req *service.HowAreYouRequest) (*service.HowAreYouReply, error) {
 	localChangeAt := application.App.GetChangeAt()
 	contentType, err := utils.Xlipboard().ContentType()
-	if err != nil || contentType == utils.TypeBitmap {
+	if err != nil || contentType == utils.TypeBitmap || tags.NoFuse() {
 		contentType = utils.TypeText
 	}
 	var copyStr string

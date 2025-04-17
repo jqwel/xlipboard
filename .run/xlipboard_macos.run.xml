@@ -2,6 +2,7 @@
   <configuration default="false" name="xlipboard_macos" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="xlipboard" />
     <working_directory value="$PROJECT_DIR$" />
+    <useCustomBuildTags value="true" />
     <envs>
       <env name="CGO_ENABLED" value="1" />
     </envs>

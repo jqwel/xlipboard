@@ -201,6 +201,9 @@ func (d *Detector) fetch() error {
 	}
 	switch shrur.GetContentType() {
 	case utils.TypeText:
+		if App.IsDebug {
+			logger.Logger.Debugln("文本内容是:", shrur.GetCopyStr())
+		}
 		if err := utils.Xlipboard().SetText(shrur.GetCopyStr()); err != nil {
 			return err
 		}

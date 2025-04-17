@@ -60,7 +60,7 @@ func main() {
 	defer app.BeforeExit()
 	app.IsDebug = mode == "debug"
 
-	if err := utils.InitOffsetPeriodically(app.Config.NtpAddress, time.Minute*10); err != nil {
+	if err := utils.InitOffsetPeriodically(app.Config.NtpAddress, time.Minute*60); err != nil {
 		logger.Logger.Error(err)
 	}
 

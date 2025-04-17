@@ -1,6 +1,7 @@
 package application
 
 import (
+	"github.com/jqwel/xlipboard/src/tags"
 	"os"
 	"path/filepath"
 	"sync"
@@ -100,11 +101,13 @@ func onReady() {
 			go utils.OpenFileManager(App.ExecPath)
 		})
 	}
-	if App.IsDebug {
-		mi := systray.AddMenuItem("打开Temp目录", "")
-		mi.Click(func() {
-			go utils.OpenFileManager(filepath.Join(os.TempDir(), iconst.MountFolder))
-		})
+	if !tags.NoFuse() {
+		if App.IsDebug {
+			mi := systray.AddMenuItem("打开Temp目录", "")
+			mi.Click(func() {
+				go utils.OpenFileManager(filepath.Join(os.TempDir(), iconst.MountFolder))
+			})
+		}
 	}
 
 	{

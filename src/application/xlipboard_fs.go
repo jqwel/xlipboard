@@ -1,3 +1,6 @@
+//go:build !no_fuse
+// +build !no_fuse
+
 package application
 
 import (
